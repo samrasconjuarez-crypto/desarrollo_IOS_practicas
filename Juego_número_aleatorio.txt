@@ -1,0 +1,113 @@
+import Foundation
+/*
+─────────────────────────────────────────────────────────────
+JUEGO: ADIVINA EL NÚMERO (Swift, consola)
+
+Explicado paso a paso con comentarios sencillos:
+
+- La computadora "piensa" un número entre 1 y 100 y lo guarda.
+- Usted escribe números intentando adivinarlo.
+- Si acierta, el juego dice cuántos intentos tardó.
+- Si no acierta, dice si el número secreto es mayor o menor.
+─────────────────────────────────────────────────────────────
+*/
+
+// Mostramos un mensaje de bienvenida
+print("🎲 Bienvenidx al juego: Adivina el número (1 a 100)")
+// Explicamos brevemente las reglas y agregamos un salto de línea al final (\n)
+print("La maquina ya pensó un número entre 1 y 100. ¡Intente adivinarlo!\n")
+
+/*
+Aquí declaramos la variable que guardará el número secreto.
+
+¿Por qué escribimos INT dos veces?
+1. let numeroSecreto: Int  → Aquí indicamos el TIPO de la variable (será un entero).
+2. Int.random(in: 1...100) → Aquí usamos la función random del tipo Int para generar
+   un número aleatorio entre 1 y 100.
+
+Podríamos omitir el primer Int y escribir solo:
+   let numeroSecreto = Int.random(in: 1...100)
+porque Swift sabe que random devuelve un Int, pero se deja explícito para que sea claro.
+*/
+let numeroSecreto: Int = Int.random(in: 1...100)
+
+// Esta variable cuenta cuántos intentos ha hecho el jugador.
+var intentos: Int = 0
+
+/*
+while true { ... }
+Este bucle significa: sigue preguntando hasta que el jugador adivine.
+Salimos del bucle con la instrucción "break" más adelante.
+*/
+while true {
+
+    // Mostramos un mensaje pidiendo un número
+    print(" Escriba un número entre 1 y 100 y presione Enter:")
+
+    /*
+    guard let linea = readLine() else { ... }
+    - readLine() lee lo que el usuario escribió como texto.
+    - Si readLine() devuelve nil (muy raro, pero posible), mostramos un aviso y
+      usamos "continue" para regresar al inicio del bucle y volver a preguntar.
+    */
+    guard let linea = readLine() else {
+        print("No se leyó nada. Intentemos de nuevo.\n")
+        continue
+    }
+
+    /*
+    Quitar espacios extra:
+    trimmingCharacters(in: .whitespacesAndNewlines) elimina espacios y saltos de línea
+    del inicio y el final del texto.
+    Ejemplo: "   23  \n" se convierte en "23".
+    */
+    let texto = linea.trimmingCharacters(in: .whitespacesAndNewlines)
+
+    // Si el texto quedó vacío (ej. el jugador solo presionó Enter), avisamos y pedimos otra vez.
+    if texto.isEmpty {
+        print("No escribiste un número. Vuelve a intentarlo.\n")
+        continue
+    }
+
+    /*
+    Intentamos convertir el texto a número entero:
+    - Si el jugador escribió letras (ej. "hola"), esto fallará y mostramos un aviso.
+    */
+    guard let numero = Int(texto) else {
+        print("Eso no parece un número. Por favor, usa solo números (ej. 42).\n")
+        continue
+    }
+
+    /*
+    Comprobamos que el número esté en el rango válido (1 a 100):
+    - Si está fuera, avisamos y pedimos otra vez.
+    */
+    guard (1...100).contains(numero) else {
+        print("El número debe estar entre 1 y 100. Inténtalo de nuevo.\n")
+        continue
+    }
+
+    // Si todo está bien, incrementamos el contador de intentos.
+    intentos += 1
+
+    /*
+    Ahora comparamos el número del jugador con el número secreto.
+    Hay tres casos:
+    1. Si son iguales → ¡Ganó! Mostramos mensaje y salimos del bucle con break.
+    2. Si el número es menor → Decimos "el secreto es mayor".
+    3. Si el número es mayor → Decimos "el secreto es menor".
+    */
+    if numero == numeroSecreto {
+        print(" ¡Felicidades! Adivinaste el número \(numeroSecreto).")
+        // Aquí usamos un operador ternario para mostrar "intento" o "intentos" según sea 1 o más.
+        print("Te tomó \(intentos) intento\(intentos == 1 ? "" : "s"). ¡Buen trabajo! ")
+        break // Salimos del bucle porque el juego terminó.
+    } else if numero < numeroSecreto {
+        print(" El número secreto es MAYOR que \(numero). ¡Sigue intentando!\n")
+    } else {
+        print(" El número secreto es MENOR que \(numero). ¡Sigue intentando!\n")
+    }
+}
+
+// Mensaje final al terminar el juego
+print("\nGracias por jugar. ")

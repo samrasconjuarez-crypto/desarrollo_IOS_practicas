@@ -1,0 +1,261 @@
+
+/*Imagina que tienes una caja, y dentro de esa caja puedes guardar cosas.
+La caja en sí es como una "cosa especial" que guarda y organiza objetos,
+y la cosa que estás guardando en esa caja es el "nombre".
+
+En programación, el self es como esa caja que le dice a la computadora: 
+"Este soy yo, y dentro de mí guardo mis propias cosas". Entonces, en 
+la línea de código:*/
+
+
+
+/*
+struct CoordenadasIntituto{
+    let instituto: String
+    let edificio: String
+    let salon: Int
+    let detalles: String? = nil
+}
+
+let coordenadas_ficticias = CoordenadasIntituto(instituto: "IADA", edificio: "V1", salon: 107)
+let coordenadas_ficticias_2 = CoordenadasIntituto(instituto: "IADA", edificio: "V1", salon: 107)
+
+if coordenadas_ficticias_2 == coordenadas_ficticias{
+    print("Si son iguales")
+}else{
+    print("Son diferentes")
+}
+
+struct Carrera{
+    let nombre: String
+    let ubicacion_coordinacion: String
+    let instituto: String
+} 
+
+class Estudihambre {
+    var nombre: String
+    var apellidos: String 
+    var matricula: Int
+    var semestre: Double 
+    var carrera: cARRERA
+    var edad: Int
+    
+    
+    init(_ nombre: String, _ apellidos: String, matricula matr: Int, semestre: Double, carrera: Carrera, edad: Int){
+        self.nombre = nombre  //self define que algo es mi propiedad. 
+        //'self' se refiere a la instancia actual de la clase (como "yo"), y estamos asignando un valor a su propiedad 'nombre'
+        self.apellidos = apellidos
+        
+         matricula = matr
+          self.semestre = semestre
+           self.carrera = carrera
+            self.edad = edad
+    }
+    
+    func tiene_hambre()-> String {
+        return "Si, es un hambriado"
+    }
+    
+    func enviar_correo(mensaje: String) --> String{
+        return "Enviar a \(nombre) el siguiente mensaje: \(mensaje)"
+    }
+}
+
+let estudihambre = Estudihambre(nombre: "Armando", apellidos: "Mendoza", matricula: 123456, semestre: 67, carrera: "DDMI", edad: 25)
+
+
+
+print("el estudiambre es \(estudiambre.nombre)")
+print(estudiambre.tiene_hambre())
+print(estudiambre.enviar_correo(mensaje: "Si tienes hambre, compra comida. Si no, Tú tiene que tlabaja")). */
+
+
+
+
+
+
+/* -----------De aqui pa abajo es el ejercicio, lo de arriba fue el ejemplo de clase xd--------------*/
+
+
+
+
+
+
+// Intento replicar una versión simplificada de Plants vs Zombies en Swift
+// Creamos varias clases que representan personajes y objetos del juego
+
+// -------------------------
+// 1. Estructura de Coordenadas del Campo
+// -------------------------
+
+
+
+struct CoordenadasCampo {
+    let fila: Int
+    let columna: Int
+    let tipo: String  // Puede ser "césped", "piscina", etc.
+}
+// Una estructura (struct) es parecida a una clase, pero más ligera.
+// Aquí solo guardamos la posición dentro del campo.
+
+
+
+// Clase que representa a una Planta
+class Planta {
+
+  // Estas son las PROPIEDADES de la clase (las caracteristicas del personaje) 
+
+    var nombre: String
+    var costoSol: Int
+    var dano: Int
+    
+    
+ //Este es bob el constructor, su trabajo es dar valores iniciales a las propiedades del objeto cuando lo creas. 
+ //sirve para crear el objeto con sus datos
+ //En Swift, esta función especial se llama init.
+ 
+    init(nombre: String, costoSol: Int, dano: Int) {
+        self.nombre = nombre
+        self.costoSol = costoSol
+        self.dano = dano
+    }
+    
+    //aqui definimos el daño que causaria la planta
+    func atacar() -> String { //El símbolo -> indica el tipo de valor que la función o método va a devolver.
+           // Devuelve un mensaje indicando el ataque
+        return "\(nombre) lanza un ataque causando \(dano) de daño"
+    }
+}
+
+// Clase que representa a un Zombi, mantiene una estructura parecida a la anterior
+class Zombi {
+    var nombre: String
+    var vida: Int
+    var velocidad: Double
+    
+    init(nombre: String, vida: Int, velocidad: Double) {
+        self.nombre = nombre
+        self.vida = vida
+        self.velocidad = velocidad
+    }
+    
+    func recibirDano(cantidad: Int) {
+        vida -= cantidad
+        print("\(nombre) recibió \(cantidad) de daño, vida restante: \(vida)")
+    }
+    
+    
+    //Un booleando que devuelve true si el zombi sigue vivo (solo para simular)
+    func estaVivo() -> Bool {
+        return vida > 0
+    }
+}
+
+
+//El constructor NO lleva func ni retorna algo, y siempre se llama init (con minuscula).
+
+
+
+/*El constructor (init) me pregunta:
+"¿Dónde quiero poner mi planta?"
+yo le dices: "En fila 1, columna 2, césped".
+Entonces, el constructor guarda esa información en self.coordenadas.*/
+
+// Clase que representa el Campo de Batalla
+class CampoBatalla {
+//(coordenadas: CoordenadasCampo) → Es un parámetro que el constructor recibe para crear el objeto.
+//coordenadas = el nombre del parámetro.
+//CoordenadasCampo = el tipo de dato (en este caso, una estructura que definimos antes).
+
+
+    var coordenadas: CoordenadasCampo 
+    var planta: Planta?
+    var zombi: Zombi?
+    
+    
+    
+    init(coordenadas: CoordenadasCampo) {
+        self.coordenadas = coordenadas
+        
+        /*
+        Aquí, casilla es de tipo CoordenadasCampo. Cuando hacemos CampoBatalla(coordenadas: casilla), 
+        le pasamos esa coordenada al constructor. El constructor mete ese valor 
+        dentro de self.coordenadas para que el campo sepa dónde está.
+        */
+    }
+    
+    func colocarPlanta(planta: Planta) {
+        self.planta = planta
+        print("Se colocó la planta \(planta.nombre) en fila \(coordenadas.fila), columna \(coordenadas.columna)")
+    }
+    
+    func colocarZombi(zombi: Zombi) {
+        self.zombi = zombi
+        print("Un zombi \(zombi.nombre) apareció en fila \(coordenadas.fila), columna \(coordenadas.columna)")
+    }
+}
+
+// Clase que representa al Jugador
+class Jugador {
+    var nombre: String
+    var soles: Int
+    
+    init(nombre: String, soles: Int) {
+        self.nombre = nombre
+        self.soles = soles
+    }
+      
+      
+       //booleano para poder comprar planta si se tienen los soles suficientes
+    func comprarPlanta(planta: Planta) -> Bool {
+        if soles >= planta.costoSol {
+            soles -= planta.costoSol
+            print("\(nombre) compró \(planta.nombre). Soles restantes: \(soles)")
+            return true
+        } else {
+            print("No tienes soles suficientes para comprar \(planta.nombre)")
+            return false
+        }
+    }
+}
+
+// Clase que representa la Partida (acción simple)
+class Partida {
+//hacemos que la planta ataque
+    func plantaAtacaZombi(planta: Planta, zombi: Zombi) {
+        print(planta.atacar()) //aqui imprime cuando la planta le meta un madrazo al zombi
+        zombi.recibirDano(cantidad: planta.dano)  // aqui declaramos el tamaño del madrazo que recibe
+        if !zombi.estaVivo() {
+            print("¡El zombi \(zombi.nombre) ha sido derrotado!")
+        }
+    }
+}
+
+
+//EJECUCIÓN
+
+// Creamos coordenadas para un espacio del campo
+let casilla = CoordenadasCampo(fila: 1, columna: 2, tipo: "césped")
+
+// Creamos instancias de Planta y Zombi, aqui es donde decimos el daño que se va a restar de la vida del zombi en la simulacion
+let plantaGuisante = Planta(nombre: "Lanzaguisantes", costoSol: 100, dano: 20)
+let zombiBasico = Zombi(nombre: "Zombi Caminante", vida: 50, velocidad: 1.5)
+
+// Creamos el campo de batalla
+let campo = CampoBatalla(coordenadas: casilla)
+
+// Creamos al jugador
+let jugador = Jugador(nombre: "Samuel", soles: 150)
+
+// El jugador compra la planta
+if jugador.comprarPlanta(planta: plantaGuisante) {
+    campo.colocarPlanta(planta: plantaGuisante)
+}
+
+// Colocamos un zombi en el campo
+campo.colocarZombi(zombi: zombiBasico)
+
+// Simulamos una pequeña batalla
+let partida = Partida()
+partida.plantaAtacaZombi(planta: plantaGuisante, zombi: zombiBasico)
+partida.plantaAtacaZombi(planta: plantaGuisante, zombi: zombiBasico)
